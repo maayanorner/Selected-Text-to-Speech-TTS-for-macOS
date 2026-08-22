@@ -1,81 +1,130 @@
-# Speak Selection with Local TTS
+# Selected Text to Speech (TTS) for macOS
 
-Speak selected text in macOS applications with the local
-[Kokoro-82M](https://github.com/hexgrad/kokoro) model.
-Chatterbox Turbo is available as an optional engine.
+Speak selected text in macOS applications with a local TTS model. The project
+provides the **Speak Selection with Local TTS** Quick Action and supports:
+
+- [Kokoro-82M](https://github.com/hexgrad/kokoro), the default engine
+- Chatterbox Turbo, an optional engine with sentence-buffered playback
+
+Audio is played from memory and is not saved to disk.
 
 ## Requirements
 
 - macOS
-- [`uv`](https://docs.astral.sh/uv/)
+- [uv](https://docs.astral.sh/uv/)
 
-No Homebrew packages are required.
+No Homebrew packages or background services are required.
 
 ## Install
+
+Clone or download this repository, open a terminal in its directory, and run:
 
 ```sh
 ./scripts/install-quick-action.sh
 ```
 
-The installer creates a project-local Python environment, copies the Quick
-Action to `~/Library/Services`, and refreshes the macOS Services cache. It does
-not install a background service or login item. When upgrading from the former
-Kokoro-named action, it removes that obsolete workflow to avoid duplicates.
+This command:
 
-See [start-service-instructions.md](start-service-instructions.md) to configure
-Option-S and use it. Repeated presses pause and resume the current selection
-without restarting it. Selecting different text and pressing Option-S replaces
-the current speech with the new selection.
+1. Creates the project-local `.venv` with uv and installs the default Kokoro
+   dependencies there.
+2. Installs **Speak Selection with Local TTS** in
+   `~/Library/Services`.
+3. Refreshes the macOS Services list.
 
-Generated audio is played from memory and never saved to disk. Model weights
-are downloaded to the Hugging Face cache on first startup.
+It does not create a login item or background service. When upgrading from the
+old Kokoro-named action, the installer removes that obsolete workflow.
 
-## Chatterbox Turbo
+### Optional: install Chatterbox Turbo
 
-Install Chatterbox into the project environment:
+Install Chatterbox into the same project-local environment:
 
 ```sh
 uv sync --extra chatterbox
 ```
 
-Run it:
+No system-wide Python packages are installed.
+
+## Configure the shortcut
+
+Open **System Settings → Keyboard → Keyboard Shortcuts → Services**, find
+**Speak Selection with Local TTS**, and assign Option–S. macOS does not let a
+Quick Action supply its own default shortcut.
+
+## Run
+
+The server runs in the foreground. Start the default Kokoro engine from the
+project directory:
+
+```sh
+uv run selection-tts-server
+```
+
+Or start Chatterbox Turbo:
 
 ```sh
 uv run --extra chatterbox selection-tts-server --engine chatterbox
 ```
 
-It uses the built-in English voice and selects Apple MPS automatically. Each
-spaCy sentence is buffered in memory before playback. A continuous model worker
-keeps up to four completed sentences ready while audio plays, so any generation
-delay occurs between sentences rather than inside one.
+Keep that terminal open. Then select text in an application that exposes its
+selection to macOS Services and press Option–S.
+
+- Press Option–S again with the same text selected to pause.
+- Press it once more with the same text selected to resume without restarting.
+- Select different text and press Option–S to replace the current speech.
+- Press Control–C in the terminal to stop the server.
+
+## Command-line options
+
+```text
+--engine {kokoro,chatterbox}  TTS engine; defaults to kokoro
+--voice VOICE                Kokoro voice; defaults to af_heart
+--speed SPEED                Kokoro speed multiplier; defaults to 1.0
+--device {auto,mps,cpu}       Inference device; auto prefers Apple MPS
+--port PORT                   Local HTTP port; defaults to 8765
+--natural-flow                Enable natural-flow preprocessing (default)
+--no-natural-flow             Disable natural-flow preprocessing
+--latex                       Join words split by hyphenated paper line breaks
+```
+
+For example, run Chatterbox with paper-text preprocessing:
+
+```sh
+uv run --extra chatterbox selection-tts-server --engine chatterbox --latex
+```
+
+Use `uv run selection-tts-server --help` for the generated CLI help.
 
 ## Text preprocessing
 
 Natural flow is enabled by default. It uses spaCy sentence spans to remove
-newlines inside a sentence while preserving sentence boundaries:
+newlines inside individual sentences while preserving sentence boundaries.
 
-```sh
-uv run selection-tts-server --natural-flow
-uv run selection-tts-server --no-natural-flow
-```
+The optional `--latex` mode additionally joins a word broken across a line
+break, such as `specu-\nlation`. It only joins a hyphen when a newline follows
+it.
 
-The implementation is `natural_flow` in `src/macos_selection_tts/server.py`.
+Chatterbox generates complete sentence buffers ahead of playback. One model
+worker fills a bounded audio queue while previously generated speech plays.
 
-For text copied from papers, `--latex` joins letter-hyphen-linebreak-letter
-sequences such as `specu-\nlation`. It is disabled by default:
+## Files and model cache
 
-```sh
-uv run selection-tts-server --latex
-```
+The installer writes only the following project or user-local files:
 
-## Uninstall
+- `.venv` inside the project directory
+- `~/Library/Services/Speak Selection with Local TTS.workflow`
+- Model files downloaded by the engines to the standard Hugging Face cache on
+  first use
+
+No audio files are created.
+
+## Uninstall the Quick Action
 
 ```sh
 ./scripts/uninstall-quick-action.sh
 ```
 
-This removes only the Quick Action. The project environment and reusable model
-cache remain.
+This removes only the Quick Action. It leaves the project `.venv` and model
+cache intact.
 
 ## Development
 
