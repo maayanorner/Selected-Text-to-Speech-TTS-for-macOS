@@ -6,13 +6,6 @@ project_dir=${script_dir:h}
 source_workflow="$project_dir/quick-action/SelectedTextToSpeech.workflow"
 destination="$HOME/Library/Services/SelectedTextToSpeech.workflow"
 
-if ! command -v uv >/dev/null 2>&1; then
-  print -u2 "uv is required: https://docs.astral.sh/uv/"
-  exit 1
-fi
-
-uv sync --project "$project_dir" --inexact
-
 mkdir -p "$HOME/Library/Services"
 if [[ -e "$destination" ]]; then
   /bin/rm -R "$destination"

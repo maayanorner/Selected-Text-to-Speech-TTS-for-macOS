@@ -59,31 +59,15 @@ No Homebrew packages or background services are required.
 
 ## Install
 
-Clone or download this repository, open a terminal in its directory, and run:
-
 ```sh
+git clone https://github.com/maayanorner/Selected-Text-to-Speech-TTS-for-macOS.git
+cd Selected-Text-to-Speech-TTS-for-macOS
+uv sync --extra chatterbox  # --extra chatterbox is optional
 ./scripts/install-quick-action.sh
 ```
 
-This command:
-
-1. Creates the project-local `.venv` with uv and installs the default Kokoro
-   dependencies there.
-2. Installs **Speak Selection with Local TTS** in
-   `~/Library/Services`.
-3. Refreshes the macOS Services list.
-
-It does not create a login item or background service.
-
-### Optional: install Chatterbox Turbo
-
-Install Chatterbox into the same project-local environment:
-
-```sh
-uv sync --extra chatterbox
-```
-
-No system-wide Python packages are installed.
+This installs both Kokoro and Chatterbox Turbo, then installs the macOS Quick
+Action. It does not create a login item or background service.
 
 ## Configure the shortcut
 
