@@ -73,8 +73,9 @@ Action. It does not create a login item or background service.
 
 Open **System Settings → Keyboard → Keyboard Shortcuts → Services**, find
 **Speak Selection with Local TTS**, and assign your preferred shortcut (for
-example, Option–S). macOS does not let a Quick Action supply its own default
-shortcut.
+example, Option–S). **You need to define it yourself because Quick Action
+shortcuts cannot be assigned cleanly by an installer: macOS provides no
+supported command-line API for changing them.**
 
 ## Run
 
