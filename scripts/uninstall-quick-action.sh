@@ -1,7 +1,7 @@
 #!/bin/zsh
 set -eu
 
-destination="$HOME/Library/Services/Speak Selection with Local TTS.workflow"
+destination="$HOME/Library/Services/SelectedTextToSpeech.workflow"
 
 if [[ -e "$destination" ]]; then
   /bin/rm -R "$destination"

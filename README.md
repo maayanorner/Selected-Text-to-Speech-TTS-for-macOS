@@ -31,8 +31,7 @@ This command:
    `~/Library/Services`.
 3. Refreshes the macOS Services list.
 
-It does not create a login item or background service. When upgrading from the
-old Kokoro-named action, the installer removes that obsolete workflow.
+It does not create a login item or background service.
 
 ### Optional: install Chatterbox Turbo
 
@@ -111,7 +110,7 @@ worker fills a bounded audio queue while previously generated speech plays.
 The installer writes only the following project or user-local files:
 
 - `.venv` inside the project directory
-- `~/Library/Services/Speak Selection with Local TTS.workflow`
+- `~/Library/Services/SelectedTextToSpeech.workflow`
 - Model files downloaded by the engines to the standard Hugging Face cache on
   first use
 
