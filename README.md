@@ -86,13 +86,13 @@ selection to macOS Services and press Option–S.
 
 ```text
 --engine {kokoro,chatterbox}  TTS engine; defaults to kokoro
---voice VOICE                Kokoro voice; defaults to af_heart
---speed SPEED                Kokoro speed multiplier; defaults to 1.0
---device {auto,mps,cpu}       Inference device; auto prefers Apple MPS
---port PORT                   Local HTTP port; defaults to 8765
---natural-flow                Enable natural-flow preprocessing (default)
---no-natural-flow             Disable natural-flow preprocessing
---latex                       Join words split by hyphenated paper line breaks
+--voice VOICE                Kokoro voice ID; Kokoro only; defaults to af_heart
+--speed SPEED                Kokoro speed multiplier; Kokoro only; defaults to 1.0
+--device {auto,mps,cpu}       Inference device for either engine; auto prefers Apple MPS
+--port PORT                   Localhost HTTP port; defaults to 8765
+--natural-flow                Within each spaCy sentence, replace line breaks with spaces; enabled by default
+--no-natural-flow             Disable natural-flow newline replacement; --latex still applies if enabled
+--latex                       Join PDF-style hyphenated line wraps, such as specu-\nlation; disabled by default
 ```
 
 For example, run Chatterbox with paper-text preprocessing:

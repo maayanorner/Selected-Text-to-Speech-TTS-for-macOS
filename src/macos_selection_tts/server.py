@@ -589,32 +589,47 @@ def build_parser() -> argparse.ArgumentParser:
         "--engine",
         choices=("kokoro", "chatterbox"),
         default="kokoro",
-        help="speech engine (default: kokoro)",
+        help="TTS engine (default: kokoro)",
     )
-    parser.add_argument("--voice", default="af_heart", help="Kokoro American-English voice")
+    parser.add_argument(
+        "--voice",
+        default="af_heart",
+        help="Kokoro voice ID; supported only by Kokoro (default: af_heart)",
+    )
     parser.add_argument(
         "--speed",
         type=float,
         default=1.0,
-        help="Kokoro speech speed multiplier",
+        help="speech speed multiplier; supported only by Kokoro (default: 1.0)",
     )
     parser.add_argument(
         "--device",
         choices=("auto", "mps", "cpu"),
         default="auto",
-        help="Inference device (auto prefers Apple MPS)",
+        help="inference device for either engine (auto prefers Apple MPS)",
     )
-    parser.add_argument("--port", type=int, default=8765, help="Local HTTP port")
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8765,
+        help="localhost HTTP port (default: 8765)",
+    )
     parser.add_argument(
         "--natural-flow",
         action=argparse.BooleanOptionalAction,
         default=True,
-        help="remove newlines inside spaCy sentence spans (enabled by default)",
+        help=(
+            "within each spaCy sentence, replace line breaks with spaces "
+            "(enabled by default)"
+        ),
     )
     parser.add_argument(
         "--latex",
         action="store_true",
-        help="join letter-hyphen-linebreak-letter sequences (disabled by default)",
+        help=(
+            "join PDF-style hyphenated line wraps such as "
+            "'specu-\\nlation' (disabled by default)"
+        ),
     )
     return parser
 
