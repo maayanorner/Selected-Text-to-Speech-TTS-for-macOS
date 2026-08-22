@@ -100,6 +100,45 @@ def test_new_selection_replaces_current_playback():
     controller.shutdown()
 
 
+def test_replacement_does_not_wait_for_cancelled_worker():
+    release = threading.Event()
+
+    class SlowCancellationEngine:
+        def __init__(self):
+            self.plays = []
+            self.started = threading.Event()
+
+        def play(self, text, cancelled, paused):
+            self.plays.append(text)
+            self.started.set()
+            if len(self.plays) == 1:
+                release.wait(timeout=2)
+
+        def stop(self):
+            return None
+
+    engine = SlowCancellationEngine()
+    controller = PlaybackController(engine)
+    first = PreparedText("first", ("first",))
+    second = PreparedText("second", ("second",))
+
+    assert controller.toggle(first) == "started"
+    assert engine.started.wait(timeout=1)
+
+    started = time.monotonic()
+    assert controller.toggle(second) == "replaced"
+    assert time.monotonic() - started < 0.2
+    assert engine.plays == [first]
+
+    release.set()
+    for _ in range(100):
+        if engine.plays == [first, second]:
+            break
+        time.sleep(0.005)
+    assert engine.plays == [first, second]
+    controller.shutdown()
+
+
 def test_natural_completion_returns_to_idle():
     class ImmediateEngine(FakeEngine):
         def play(self, text, cancelled, paused):

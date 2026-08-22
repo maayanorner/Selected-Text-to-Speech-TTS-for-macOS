@@ -318,6 +318,8 @@ class PlaybackController:
         self._cancelled: threading.Event | None = None
         self._pause_event: threading.Event | None = None
         self._thread: threading.Thread | None = None
+        self._pending_text: PreparedText | None = None
+        self._shutting_down = False
 
     @property
     def active(self) -> bool:
@@ -348,12 +350,13 @@ class PlaybackController:
                         pause_event.set()
                     return "paused"
 
-                cancelled, pause_event, thread = self._detach_locked()
+                self._pending_text = text
+                self._paused = False
+                if self._pause_event is not None:
+                    self._pause_event.clear()
+                if self._cancelled is not None:
+                    self._cancelled.set()
 
-            self._stop_worker(cancelled, pause_event, thread)
-
-            with self._lock:
-                self._start_locked(text)
             return "replaced"
 
     def _start_locked(self, text: PreparedText) -> None:
@@ -390,20 +393,6 @@ class PlaybackController:
         self._thread = None
         return cancelled, pause_event, thread
 
-    def _stop_worker(
-        self,
-        cancelled: threading.Event | None,
-        pause_event: threading.Event | None,
-        thread: threading.Thread | None,
-    ) -> None:
-        if pause_event is not None:
-            pause_event.clear()
-        if cancelled is not None:
-            cancelled.set()
-        self.engine.stop()
-        if thread is not None:
-            thread.join()
-
     def _play(
         self,
         generation: int,
@@ -425,12 +414,24 @@ class PlaybackController:
                     self._cancelled = None
                     self._pause_event = None
                     self._thread = None
+                    pending = self._pending_text
+                    self._pending_text = None
+                    if pending is not None and not self._shutting_down:
+                        self._start_locked(pending)
 
     def shutdown(self) -> None:
         with self._operation_lock:
             with self._lock:
+                self._shutting_down = True
+                self._pending_text = None
                 cancelled, pause_event, thread = self._detach_locked()
-            self._stop_worker(cancelled, pause_event, thread)
+            if pause_event is not None:
+                pause_event.clear()
+            if cancelled is not None:
+                cancelled.set()
+            self.engine.stop()
+            if thread is not None:
+                thread.join(timeout=1)
 
 
 def transform_sentence_spans(
