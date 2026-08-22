@@ -1,10 +1,20 @@
 # Selected Text to Speech (TTS) for macOS
 
-Speak selected text in macOS applications with a local TTS model. The project
-provides the **Speak Selection with Local TTS** Quick Action and supports:
+## About
+
+This project turns selected text in macOS applications into speech using a
+model running locally. It provides the **Speak Selection with Local TTS** Quick
+Action, with pause/resume controls, text preprocessing, and memory-only audio
+playback.
+
+This project was vibe-coded: it was built iteratively with an AI coding agent
+and tested on macOS.
+
+It supports:
 
 - [Kokoro-82M](https://github.com/hexgrad/kokoro), the default engine
-- Chatterbox Turbo, an optional engine with sentence-buffered playback
+- [Chatterbox Turbo](https://github.com/resemble-ai/chatterbox), an optional
+  engine with sentence-buffered playback
 
 Audio is played from memory and is not saved to disk.
 
@@ -131,3 +141,21 @@ cache intact.
 uv sync
 uv run pytest
 ```
+
+## Built with
+
+- [Kokoro](https://github.com/hexgrad/kokoro)
+- [Kokoro-82M model](https://huggingface.co/hexgrad/Kokoro-82M)
+- [Chatterbox](https://github.com/resemble-ai/chatterbox)
+- [Chatterbox Turbo model](https://huggingface.co/ResembleAI/chatterbox-turbo)
+- [spaCy](https://github.com/explosion/spaCy)
+- [spaCy models](https://github.com/explosion/spacy-models)
+- [NumPy](https://github.com/numpy/numpy)
+- [python-sounddevice](https://github.com/spatialaudio/python-sounddevice)
+- [uv](https://github.com/astral-sh/uv)
+
+## License
+
+The original code in this project is licensed under the [MIT License](LICENSE).
+Third-party dependencies and adapted portions retain their original licenses
+and copyright notices; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

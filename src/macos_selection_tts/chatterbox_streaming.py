@@ -1,5 +1,10 @@
 """Incrementally decode speech with Chatterbox Turbo."""
 
+# Original code in this file is licensed under the project's MIT License.
+# Portions adapt Chatterbox T3 code (Copyright 2025 Resemble AI, MIT) and
+# Chatterbox S3Gen/CosyVoice code (Copyright 2024 Alibaba Inc., Apache-2.0).
+# See THIRD_PARTY_NOTICES.md and APACHE-2.0.txt.
+
 from __future__ import annotations
 
 from collections.abc import Iterator
