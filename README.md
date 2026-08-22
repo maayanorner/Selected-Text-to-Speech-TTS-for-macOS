@@ -1,14 +1,20 @@
-# Selected Text to Speech (TTS) for macOS
+# 🗣️ Selected Text to Speech (TTS) for macOS 🍎
 
 ## About
 
-This project turns selected text in macOS applications into speech using a
-model running locally. It provides the **Speak Selection with Local TTS** Quick
-Action, with pause/resume controls, text preprocessing, and memory-only audio
-playback.
+🎯 **Goal:** Turn selected text 📝 in macOS applications into speech 🗣️ using a model
+running locally. The project provides the **Speak Selection with Local TTS**
+Quick Action, with pause/resume controls, text preprocessing, and memory-only
+audio playback.
 
-This project was vibe-coded: it was built iteratively with an AI coding agent
-and tested on macOS.
+🤖 **Development:** This project was vibe-coded: it was built iteratively with
+an AI coding agent and tested on macOS.
+
+⚠️ **Disclaimer:** Use at your own risk. This is an experimental project
+provided “as is,” without warranty, under the [MIT License](LICENSE). You are
+responsible for how you use generated audio and for complying with applicable
+laws and third-party licenses. This project is not affiliated with or endorsed
+by the upstream model or library authors.
 
 It supports:
 
