@@ -16,6 +16,34 @@ responsible for how you use generated audio and for complying with applicable
 laws and third-party licenses. This project is not affiliated with or endorsed
 by the upstream model or library authors.
 
+## How it works
+
+```mermaid
+flowchart LR
+    A["📝 Select text"] --> B["⌨️ Your configured shortcut"]
+    B --> C["⚡ Quick Action"]
+    C --> D["🧠 Local TTS server"]
+    D --> E["🗣️ Hear speech"]
+    E -->|"Same selection + shortcut"| F["⏯️ Pause or resume"]
+    E -->|"Different selection + shortcut"| G["🔄 Replace speech"]
+```
+
+For example, highlight the words shown in brackets:
+
+```text
+The paper reports that [speculative decoding reduces inference latency]
+                        └─────── selected text ───────┘
+```
+
+Only `speculative decoding reduces inference latency` is sent to the local TTS
+server and spoken.
+
+In practice: start the local server in a terminal, select text in a macOS
+application, and press your configured shortcut (for example, Option–S). Keep
+the same text selected to pause or resume; select different text to replace the
+current speech. Installation, shortcut configuration, and server commands are
+described below.
+
 It supports:
 
 - [Kokoro-82M](https://github.com/hexgrad/kokoro), the default engine
@@ -62,8 +90,9 @@ No system-wide Python packages are installed.
 ## Configure the shortcut
 
 Open **System Settings → Keyboard → Keyboard Shortcuts → Services**, find
-**Speak Selection with Local TTS**, and assign Option–S. macOS does not let a
-Quick Action supply its own default shortcut.
+**Speak Selection with Local TTS**, and assign your preferred shortcut (for
+example, Option–S). macOS does not let a Quick Action supply its own default
+shortcut.
 
 ## Run
 
@@ -81,11 +110,11 @@ uv run --extra chatterbox selection-tts-server --engine chatterbox
 ```
 
 Keep that terminal open. Then select text in an application that exposes its
-selection to macOS Services and press Option–S.
+selection to macOS Services and press your configured shortcut.
 
-- Press Option–S again with the same text selected to pause.
+- Press the shortcut again with the same text selected to pause.
 - Press it once more with the same text selected to resume without restarting.
-- Select different text and press Option–S to replace the current speech.
+- Select different text and press the shortcut to replace the current speech.
 - Press Control–C in the terminal to stop the server.
 
 ## Command-line options

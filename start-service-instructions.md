@@ -17,8 +17,9 @@ Use `--latex` to join words split with a hyphen across paper line breaks.
 
 Then:
 
-1. Assign Option–S to **Speak Selection with Local TTS** under **Keyboard → Keyboard Shortcuts → Services**.
-2. Select text and press Option–S.
-3. Press Option–S again to pause. Press it once more to continue from the same
-   position. Select different text and press Option–S to replace the current
-   speech. Press Ctrl–C in the terminal to stop the server.
+1. Assign your preferred shortcut (for example, Option–S) to **Speak Selection
+   with Local TTS** under **Keyboard → Keyboard Shortcuts → Services**.
+2. Select text and press your configured shortcut.
+3. Press the shortcut again to pause. Press it once more to continue from the
+   same position. Select different text and press the shortcut to replace the
+   current speech. Press Ctrl–C in the terminal to stop the server.
