@@ -18,25 +18,23 @@ by the upstream model or library authors.
 
 ## How it works
 
-```mermaid
-flowchart LR
-    A["📝 Select text"] --> B["⌨️ Your configured shortcut"]
-    B --> C["⚡ Quick Action"]
-    C --> D["🧠 Local TTS server"]
-    D --> E["🗣️ Hear speech"]
-    E -->|"Same selection + shortcut"| F["⏯️ Pause or resume"]
-    E -->|"Different selection + shortcut"| G["🔄 Replace speech"]
-```
+<p align="center">
+  🖱️ <strong>Select text with your mouse</strong>
+  → ⌨️ <strong>Your shortcut</strong>
+  → ⚡ <strong>Quick Action</strong>
+  → 🧠 <strong>Local TTS</strong>
+  → 🗣️ <strong>Speech</strong>
+</p>
 
-For example, highlight the words shown in brackets:
+For example, use your mouse to select the highlighted span:
 
-```text
-The paper reports that [speculative decoding reduces inference latency]
-                        └─────── selected text ───────┘
-```
+> The paper reports that <mark>speculative decoding reduces inference latency</mark>.
 
 Only `speculative decoding reduces inference latency` is sent to the local TTS
 server and spoken.
+
+- Same selection + shortcut: pause or resume.
+- Different selection + shortcut: replace the current speech.
 
 In practice: start the local server in a terminal, select text in a macOS
 application, and press your configured shortcut (for example, Option–S). Keep
