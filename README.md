@@ -2,6 +2,12 @@
 
 ## About
 
+💡 **Motivation:** I built this to read research papers aloud using local neural
+TTS voices because the built-in macOS speech did not suit my preferences. Text copied
+from papers also contains line breaks and hyphenated word splits that sound
+unnatural when read literally, so the project includes sentence-aware
+preprocessing for more natural speech.
+
 🎯 **Goal:** Turn selected text 📝 in macOS applications into speech 🗣️ using a model
 running locally. The project provides the **Speak Selection with Local TTS**
 Quick Action, with pause/resume controls, text preprocessing, and memory-only
